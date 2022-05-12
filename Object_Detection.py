@@ -72,9 +72,12 @@ while True:
             cv2.putText(img, label, (x,y+h), font, 2, color, 2)
 
             if(y<line_position and y+h>line_position):
-                # textSize = cv2.getTextSize("Slow down vehicle",font,3,3)
-                cv2.putText(img, "Slow down vehicle", (width//6, height-30),font,3,(255,0,0),3)
-                # cv2.rectangle(img, (x,y), (x+w,y+h), color, 2)
+                x0 = width//6
+                y0 = height-30
+                textSize = cv2.getTextSize("Slow down vehicle",font,3,3)
+                cv2.rectangle(img, (x0,y0), (x0+textSize[0][0],y0-textSize[0][1]), (255,255,255), -1)
+                cv2.putText(img, "Slow down vehicle", (x0, y0),font,3,(255,0,0),3)
+
 
     cv2.imshow('Image',img)
     key = cv2.waitKey(1)
