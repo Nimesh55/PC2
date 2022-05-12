@@ -69,10 +69,12 @@ while True:
             confidence = str(round(confidences[i],2))
             color = colors[i]
             cv2.rectangle(img, (x,y), (x+w,y+h), color, 2)
-            cv2.putText(img, label, (x+w//2,y+h//2), font, 2, color, 3)
+            cv2.putText(img, label, (x,y+h), font, 2, color, 2)
 
             if(y<line_position and y+h>line_position):
-                cv2.putText(img, "Slow down vehicle", (width//6, height-10),font,3,(255,0,0),3)
+                # textSize = cv2.getTextSize("Slow down vehicle",font,3,3)
+                cv2.putText(img, "Slow down vehicle", (width//6, height-30),font,3,(255,0,0),3)
+                # cv2.rectangle(img, (x,y), (x+w,y+h), color, 2)
 
     cv2.imshow('Image',img)
     key = cv2.waitKey(1)
