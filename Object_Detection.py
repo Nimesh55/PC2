@@ -9,7 +9,7 @@ classes = []
 with open('coco.names','r') as f:
     classes = f.read().splitlines()
 
-cap =cv2.VideoCapture('test3.mp4')
+cap =cv2.VideoCapture('test03.mp4')
 
 # Setup initial positions in the line
 _, img = cap.read()
@@ -69,7 +69,7 @@ while True:
             confidence = str(round(confidences[i],2))
             color = colors[i]
             cv2.rectangle(img, (x,y), (x+w,y+h), color, 2)
-            cv2.putText(img, label, (x+w//2,y+h//2), font, 1, color, 1)
+            cv2.putText(img, label, (x+w//2,y+h//2), font, 2, color, 2)
 
             if(y<line_position and y+h>line_position):
                 cv2.putText(img, "Slow down vehicle", (width//6, height-10),font,3,(255,0,0),3)
