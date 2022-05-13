@@ -5,9 +5,12 @@ import numpy as np
 net = cv2.dnn.readNet('yolov3.weights', 'yolov3.cfg')
 
 classes = []
+needed_classes = []
 
 with open('coco.names','r') as f:
     classes = f.read().splitlines()
+with open('coco_modified.names','r') as f:
+    needed_classes = f.read().splitlines()
 
 cap =cv2.VideoCapture('test03.mp4')
 
@@ -66,16 +69,18 @@ while True:
         for i in indexes.flatten():
             x,y,w,h = boxes[i]
             label = str(classes[class_ids[i]])
+            if label not in needed_classes:
+                continue
             confidence = str(round(confidences[i],2))
             color = colors[i]
             cv2.rectangle(img, (x,y), (x+w,y+h), color, 2)
             cv2.putText(img, label, (x,y+h), font, 2, color, 2)
 
             if(y<line_position and y+h>line_position):
-                x0 = width//6
-                y0 = height-30
                 textSize = cv2.getTextSize("Slow down vehicle",font,3,3)
-                cv2.rectangle(img, (x0,y0), (x0+textSize[0][0],y0-textSize[0][1]), (255,255,255), -1)
+                x0 = width//2-textSize[0][0]//2
+                y0 = height-30
+                cv2.rectangle(img, (x0-5,y0+5), (x0+textSize[0][0],y0-textSize[0][1]-5), (255,255,255), -1)
                 cv2.putText(img, "Slow down vehicle", (x0, y0),font,3,(255,0,0),3)
 
 
