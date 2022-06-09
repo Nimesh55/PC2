@@ -1,11 +1,18 @@
 import enum
 import cv2
 import numpy as np
+from os import startfile
 
 net = cv2.dnn.readNet('yolov3.weights', 'yolov3.cfg')
 
 classes = []
 needed_classes = []
+img_array = []
+
+
+cap = cv2. VideoCapture("test03.mp4")
+length = int(cap. get(cv2. CAP_PROP_FRAME_COUNT))
+
 
 with open('coco.names','r') as f:
     classes = f.read().splitlines()
@@ -23,7 +30,8 @@ line_left_down = 25
 line_right = width-90
 line_right_down = width-25
 
-while True:
+while length>0:
+    length -= 1
     _, img = cap.read()
     height, width,_ = img.shape
 
@@ -84,7 +92,9 @@ while True:
                 cv2.putText(img, "Slow down vehicle", (x0, y0),font,3,(255,0,0),3)
 
 
-    cv2.imshow('Image',img)
+    img_array.append(img)
+
+    # cv2.imshow('Image',img)
     key = cv2.waitKey(1)
     if key == 27:
         break
@@ -110,6 +120,16 @@ while True:
         line_right_down+=5
     elif key == 67: #right down reverse
         line_right_down-=5
+
+out = cv2.VideoWriter('final.mp4',cv2.VideoWriter_fourcc(*'DIVX'), 15, (width,height))
+
+for i in range(len(img_array)):
+    out.write(img_array[i])
+out.release()
+print("Video made successfully")
+
+
+startfile('final.mp4')
 
 cap.release()
 cv2.destroyAllWindows()
